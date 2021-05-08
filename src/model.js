@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import {gsap} from 'gsap'
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js'
 import {DRACOLoader} from 'three/examples/jsm/loaders/DRACOLoader.js'
 import {MeshSurfaceSampler} from 'three/examples/jsm/math/MeshSurfaceSampler.js'
@@ -14,6 +15,7 @@ class Model{
         this.placeOnLoad = obj.placeOnLoad;
         this.color1 = obj.color1;
         this.color2 = obj.color2;
+        this.isActive = false;
 
         this.loader = new GLTFLoader();
         this.dracoLoader = new DRACOLoader();
@@ -51,6 +53,7 @@ class Model{
             this.particleGeometry = new THREE.BufferGeometry()
             const particleNum = 20000
             const particlePosition = new Float32Array(particleNum * 3)
+            const particleRandomness = new Float32Array(particleNum*3)
 
             for (let i = 0; i < particleNum; i++){
                 const newPosition = new THREE.Vector3()
@@ -60,11 +63,21 @@ class Model{
                     newPosition.y,
                     newPosition.z
                 ], i*3)
+
+                particleRandomness.set([
+                    Math.random()*2-1,
+                    Math.random()*2-1,
+                    Math.random()*2-1
+                ], i*3)
             }
             
             this.particleGeometry.setAttribute( 
                 'position', 
                 new THREE.BufferAttribute( particlePosition, 3 ) 
+            );
+            this.particleGeometry.setAttribute( 
+                'aRandom', 
+                new THREE.BufferAttribute( particleRandomness, 3 ) 
             );
             console.log(this.particleGeometry);
 
@@ -83,11 +96,14 @@ class Model{
                 uniforms: {
                     uColor1: {value: new THREE.Color(this.color1)},
                     uColor2: {value: new THREE.Color(this.color2)},
+                    uTime: {value: 0},
+                    uScale: {value: 0}
                 },
                 vertexShader: vertex,
                 fragmentShader: fragment
             
             } );
+    
 
             /**======================
              *    particles
@@ -102,9 +118,24 @@ class Model{
     }
     add(){
         this.scene.add(this.particles);
+        this.isActive = true;
+        gsap.to(this.particalMaterial.uniforms.uScale, {
+            value: 1,
+            duration: 1.2,
+            delay: 1.2,
+            ease: "power2.out",
+        })
     }
     remove(){
-        this.scene.remove(this.particles);
+        gsap.to(this.particalMaterial.uniforms.uScale, {
+            value: 0,
+            duration: 1.2,
+            ease: "power2.in",
+            onComplete: ()=>{
+                this.scene.remove(this.particles);
+                this.isActive = false;
+            }
+        })
     }
 }
 export default Model

@@ -57,7 +57,7 @@ Models
 ------------------------------*/
 const skull = new Model({
   name: 'skull',
-  file: './models/skull.glb',
+  file: './models/robot_arm.glb',
   scene: scene,
   placeOnLoad: true,
   color1: '#1ec0ff',
@@ -65,11 +65,11 @@ const skull = new Model({
 })
 const horse = new Model({
   name: 'horse',
-  file: './models/horse.glb',
+  file: './models/robot.glb',
   scene: scene,
   placeOnLoad: false,
   color1: '#0080ff',
-  color2: '#03a6ff'
+  color2: '#ffffff'
 })
 
 /*------------------------------
@@ -79,13 +79,18 @@ Controllers
 const buttons = document.querySelectorAll("button");
 console.log(buttons)
 buttons[0].addEventListener('click', ()=>{
-  horse.add()
   skull.remove()
+  horse.add()
 })
 buttons[1].addEventListener('click', ()=>{
-  skull.add()
   horse.remove()
+  skull.add()
 })
+
+/*------------------------------
+Clock
+------------------------------*/
+const clock = new THREE.Clock();
 
 
 /*------------------------------
@@ -94,6 +99,13 @@ Loop
 const animate = function () {
   requestAnimationFrame( animate );
   renderer.render( scene, camera );
+
+  if (skull.isActive){
+    skull.particalMaterial.uniforms.uTime.value = clock.getElapsedTime();
+  }
+  if (horse.isActive){
+    horse.particalMaterial.uniforms.uTime.value = clock.getElapsedTime();
+  }
 };
 animate();
 

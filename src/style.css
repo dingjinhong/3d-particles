@@ -20,6 +20,8 @@ canvas {
 
 .button {
   border: none;
+  background-color: #222;
+  color: #aaa;
   border-radius: 16px;
   padding: 8px 20px;
   cursor: pointer;
