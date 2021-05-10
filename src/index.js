@@ -57,7 +57,7 @@ Models
 ------------------------------*/
 const skull = new Model({
   name: 'skull',
-  file: './models/robot_arm.glb',
+  file: './models/nano.glb',
   scene: scene,
   placeOnLoad: true,
   color1: '#1ec0ff',

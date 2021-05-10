@@ -124,7 +124,8 @@ class Model{
             duration: 1.2,
             delay: 1.2,
             ease: "power2.out",
-        })
+        });
+        
     }
     remove(){
         gsap.to(this.particalMaterial.uniforms.uScale, {
@@ -135,7 +136,7 @@ class Model{
                 this.scene.remove(this.particles);
                 this.isActive = false;
             }
-        })
+        });
     }
 }
 export default Model
