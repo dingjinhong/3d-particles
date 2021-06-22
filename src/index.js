@@ -1,6 +1,8 @@
 import * as THREE from 'three'
+import * as dat from 'dat.gui'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import Model from './model'
+
 /*------------------------------
 Renderer
 ------------------------------*/
@@ -16,7 +18,7 @@ document.body.appendChild( renderer.domElement );
 Scene & Camera
 ------------------------------*/
 const scene = new THREE.Scene();
-// scene.background = new THREE.Color('#3e4149');
+scene.background = new THREE.Color('#d8e6e7');
 const camera = new THREE.PerspectiveCamera( 
   50, 
   window.innerWidth / window.innerHeight,
@@ -42,7 +44,30 @@ const cube = new THREE.Mesh( geometry, material );
 OrbitControls
 ------------------------------*/
 const controls = new OrbitControls( camera, renderer.domElement );
+controls.enableDamping = true; 
+controls.enableZoom = true;
+controls.autoRotate = true;
+controls.enablePan = true; 
 
+/*------------------------------
+mousemove
+------------------------------*/
+document.addEventListener('mousemove', onDocumentMouseMove, false);
+var mouseX = 0, mouseY = 0;
+function onDocumentMouseMove(event){
+  mouseX = ( event.clientX - windowHalfX ) * 2;
+  mouseY = ( event.clientY - windowHalfY ) * 2;
+}
+/*------------------------------
+dat.GUI
+------------------------------*/
+// const gui = new dat.GUI();
+// var guicontrols = new function(){
+//   this.particleNum = 10000;
+//   this.pointSize = 6.0;
+// };
+// gui.add(guicontrols, 'particleNum', 0, 30000);
+// gui.add(guicontrols, 'pointSize', 0, 10.0);
 
 /*------------------------------
 Helpers
@@ -57,20 +82,30 @@ Models
 ------------------------------*/
 const skull = new Model({
   name: 'skull',
-  file: './models/nano.glb',
+  file: './models/horse.glb',
   scene: scene,
   placeOnLoad: true,
-  color1: '#1ec0ff',
+  color1: '#8EC0E4',
   color2: '#fd999a'
 })
 const horse = new Model({
   name: 'horse',
-  file: './models/robot.glb',
+  file: './models/skull.glb',
   scene: scene,
   placeOnLoad: false,
-  color1: '#0080ff',
+  color1: '#eb9f9f',
   color2: '#ffffff'
 })
+
+// const trans = new Trans({
+//   name: '1',
+//   before: './models/skull.glb',
+//   after: './models/horse.glb',
+//   scene: scene,
+//   placeOnLoad: true,
+//   color1: '#1ec0ff',
+//   color2: '#fd999a'
+// })
 
 /*------------------------------
 Controllers
@@ -99,6 +134,9 @@ Loop
 const animate = function () {
   requestAnimationFrame( animate );
   renderer.render( scene, camera );
+  controls.update();
+
+  // skull.particalMaterial.uniforms.uSize.value = guicontrols.pointSize;
 
   if (skull.isActive){
     skull.particalMaterial.uniforms.uTime.value = clock.getElapsedTime();
@@ -106,6 +144,10 @@ const animate = function () {
   if (horse.isActive){
     horse.particalMaterial.uniforms.uTime.value = clock.getElapsedTime();
   }
+
+  
+
+
 };
 animate();
 

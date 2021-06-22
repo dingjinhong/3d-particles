@@ -17,6 +17,8 @@ class Model{
         this.color2 = obj.color2;
         this.isActive = false;
 
+        this.particleNum = 40000;
+
         this.loader = new GLTFLoader();
         this.dracoLoader = new DRACOLoader();
         this.dracoLoader.setDecoderPath( './draco/' );
@@ -26,6 +28,7 @@ class Model{
     }
     init(){
         this.loader.load(this.file,( gltf ) => {
+            console.log(gltf)
             
             /**======================
              *    original mesh
@@ -51,7 +54,7 @@ class Model{
              *========================**/
             const sampler = new MeshSurfaceSampler(this.mesh).build()
             this.particleGeometry = new THREE.BufferGeometry()
-            const particleNum = 20000
+            const particleNum = this.particleNum
             const particlePosition = new Float32Array(particleNum * 3)
             const particleRandomness = new Float32Array(particleNum*3)
 
@@ -97,6 +100,7 @@ class Model{
                     uColor1: {value: new THREE.Color(this.color1)},
                     uColor2: {value: new THREE.Color(this.color2)},
                     uTime: {value: 0},
+                    uSize: {value: 6.0},
                     uScale: {value: 0}
                 },
                 vertexShader: vertex,
@@ -125,6 +129,17 @@ class Model{
             delay: 1.2,
             ease: "power2.out",
         });
+        gsap.fromTo(this.particles.rotation, {
+            y: Math.PI
+        }, {
+            y: 0,
+            duration: .8,
+            ease: "power2.out",
+        });
+        if (this.isActive){
+            
+        }
+        
         
     }
     remove(){
@@ -137,6 +152,13 @@ class Model{
                 this.isActive = false;
             }
         });
+        gsap.fromTo(this.particles.rotation, {
+            y: 0
+        }, {
+            y: Math.PI,
+            duration: .8,
+            ease: "power2.out",
+        })
     }
 }
 export default Model

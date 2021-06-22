@@ -19,11 +19,32 @@ canvas {
 }
 
 .button {
+  font-family: 'Rakkas', cursive;
   border: none;
-  background-color: #222;
-  color: #aaa;
+  background-color: #E8F6F7;
+  color: #9DC3C1;
   border-radius: 16px;
   padding: 8px 20px;
   cursor: pointer;
   margin: 10px;
+}
+
+.herotext {
+  z-index: -1;
+  font-family: Rakkas;
+  font-size: 120px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 100px;
+  letter-spacing: 0em;
+  text-align: center;
+  
+  position: absolute;
+  width: 595px;
+  height: 209px;
+  right: 25vw;
+  top: 38vh;
+
+  color: #F7F7F7;
+  margin: 5vh;
 }
