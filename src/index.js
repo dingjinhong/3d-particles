@@ -136,7 +136,7 @@ const animate = function () {
   renderer.render( scene, camera );
   controls.update();
 
-  // skull.particalMaterial.uniforms.uSize.value = guicontrols.pointSize;
+  skull.particalMaterial.uniforms.uSize.value = 4;
 
   if (skull.isActive){
     skull.particalMaterial.uniforms.uTime.value = clock.getElapsedTime();

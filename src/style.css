@@ -27,6 +27,14 @@ canvas {
   padding: 8px 20px;
   cursor: pointer;
   margin: 10px;
+  transition: all .3s ease-out;
+}
+
+.button:hover {
+  background-color: #EdF9Fd;
+  color: #8Db3b1;
+  transform: scale(1.1);
+  transition: all .3s ease-in;
 }
 
 .herotext {
